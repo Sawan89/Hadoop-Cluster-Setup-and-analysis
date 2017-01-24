@@ -1,0 +1,62 @@
+create external table lm_centralsolardatahive(
+CentralSolarId int ,
+UtilityID int , 
+ArrayID int , 
+EgaugeID int ,
+Timestamp varchar(50) ,
+Description varchar(40) ,
+Reading varchar(30) ,
+InsertDate timestamp
+)
+
+select * from lm_centralsolardatahive;
+
+select count(*) from lm_centralsolardatahive;
+
+describe lm_centralsolardatahive;
+
+alter table lm_centralsolardatahive change reading reading bigint;
+
+alter table lm_centralsolardatahive change timestamp timestamp bigint;
+
+select distinct description from lm_centralsolardatahive;
+
+
+select count(*)
+from lm_centralsolardatahive
+where description = '2-5A';
+
+select description, timestamp, reading
+from lm_centralsolardatahive
+where description = 'Total Usage' and reading!= 0
+order by timestamp;
+
+select description, timestamp, reading
+from lm_centralsolardatahive
+where description = 'Total Generation'
+order by timestamp;
+
+select description, timestamp, reading, coalesce(reading - lag(reading) over (order by timestamp),0) as diff
+from lm_centralsolardatahive
+where description = 'Total Generation'
+order by timestamp;
+
+select description, timestamp, reading, coalesce(reading - lag(reading) over (order by timestamp),0) as diff
+from lm_centralsolardatahive
+where description = '1-5A Phase A'
+order by timestamp;
+
+select description, timestamp, reading, coalesce(reading - lag(reading) over (order by timestamp),0) as diff
+from lm_centralsolardatahive
+where description = '1-5A Phase B'
+order by timestamp;
+
+select description, timestamp, reading, coalesce(reading - lag(reading) over (order by timestamp),0) as diff
+from lm_centralsolardatahive
+where description = '1-5A Phase C'
+order by timestamp;
+
+select description, timestamp, reading, coalesce(reading - lag(reading) over (order by timestamp),0) as diff
+from lm_centralsolardatahive
+where description = 'Total Generation' and timestamp between 1473285462 and 1473357227
+order by timestamp;
