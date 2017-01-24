@@ -1,0 +1,27 @@
+a1.sources = r1
+a1.sinks = k1
+a1.channels = c1
+
+
+# Describe/configure the source
+a1.sources.r1.type = exec
+a1.sources.r1.command = tail -f /var/log/flume_source/source.txt
+a1.sources.r1.logStdErr = true
+a1.sources.r1.restart = true
+
+# Describe the sink
+a1.sinks.k1.type = hdfs
+a1.sinks.k1.hdfs.path = hdfs://192.168.115.226/flume/webdata
+a1.sinks.k1.hdfs.fileType = Datastream
+a1.sinks.k1.hdfs.rollCount = 0
+a1.sinks.k1.hdfs.batchSize = 10000
+a1.sinks.k1.hdfs.rollSize  = 1024000
+	
+# Use a channel which buffers events in memory
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 1000
+a1.channels.c1.transactionCapacity = 1000
+
+# Bind the source and sink to the channel
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1
