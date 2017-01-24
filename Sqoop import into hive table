@@ -1,0 +1,27 @@
+create external table lm_centralsolardatahive(
+CentralSolarId int ,
+UtilityID int , 
+ArrayID int , 
+EgaugeID int ,
+Timestamp varchar(50) ,
+Description varchar(40) ,
+Reading varchar(30) ,
+InsertDate timestamp
+)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ','  
+LINES TERMINATED BY '\n'
+STORED AS TEXTFILE location '/user/hive/warehouse/solardata';
+
+
+SELECT CentralSolarId FROM lm_centralsolardatahive ORDER BY CentralSolarId DESC LIMIT 1
+
+sqoop import \
+  --connect "jdbc:sqlserver://192.168.115.6:1433;databasename=MSEnergyDashboard" \
+  --username=mysrc_ro \
+  --password=amps \
+  --table LM_CentralSolarData \
+  --target-dir /user/hive/warehouse/solardata \
+  --fields-terminated-by ',' \
+  --lines-terminated-by '\n' \
+  --outdir java_files
