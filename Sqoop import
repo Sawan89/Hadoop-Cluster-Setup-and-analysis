@@ -19,7 +19,7 @@ SELECT CentralSolarId FROM lm_centralsolardatahive ORDER BY CentralSolarId DESC 
 sqoop import \
   --connect "jdbc:sqlserver://192.168.115.6:1433;databasename=MSEnergyDashboard" \
   --username=mysrc_ro \
-  --password=amps \
+  --password=**** \
   --table LM_CentralSolarData \
   --target-dir /user/hive/warehouse/solardata \
   --fields-terminated-by ',' \
